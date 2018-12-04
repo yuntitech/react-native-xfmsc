@@ -1,6 +1,6 @@
 # react-native-xfmsc
 科大讯飞语音云客户端 React Native 组件。
-目前只做了中文语音评测的封装，其他尚未实现，后续会逐渐加上。
+可配置英文或中文测评。
 此项目参考了 https://github.com/pj0579/react-native-xfei 代码。
 
 ![ScreenCapture](https://github.com/jhzzzz/react-native-xfmsc/blob/master/example/screenshot.png)
