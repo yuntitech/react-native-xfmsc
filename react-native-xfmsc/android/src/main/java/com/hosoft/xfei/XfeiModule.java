@@ -112,7 +112,7 @@ public class XfeiModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void startRecord(String evalPaper, String category) {
+    public void startRecord(String evalPaper, String language, String category) {
         Log.d(TAG, "startRecord IN");
 
         if (mIse != null) {
@@ -121,6 +121,7 @@ public class XfeiModule extends ReactContextBaseJavaModule {
             }
 
             callback("file", "", getRecordFilePath());
+            mIse.setParameter(SpeechConstant.LANGUAGE, language);  // 配置测评语言
             mIse.setParameter(SpeechConstant.ISE_CATEGORY, category);
             mIse.startEvaluating(evalPaper, null, mEvaluatorListener);
         }
@@ -158,20 +159,18 @@ public class XfeiModule extends ReactContextBaseJavaModule {
             mIse = SpeechEvaluator.createEvaluator(context, null);
         }
 
-        // 设置评测语言
-        mIse.setParameter(SpeechConstant.LANGUAGE, "zh_cn");
         // 评测试卷文本格式
         mIse.setParameter(SpeechConstant.TEXT_ENCODING, "utf-8");
         // 设置语音前端点:静音超时时间，即用户多长时间不说话则当做超时处理
         mIse.setParameter(SpeechConstant.VAD_BOS, "5000");
         // 设置语音后端点:后端点静音检测时间，即用户停止说话多长时间内即认为不再输入， 自动停止录音
-        mIse.setParameter(SpeechConstant.VAD_EOS, "3000");
-        mIse.setParameter(SpeechConstant.KEY_SPEECH_TIMEOUT, "300000");
+        mIse.setParameter(SpeechConstant.VAD_EOS, "1800");
+        mIse.setParameter(SpeechConstant.KEY_SPEECH_TIMEOUT, "-1");
         mIse.setParameter(SpeechConstant.RESULT_LEVEL, "complete");
 
         // 设置音频保存路径，保存音频格式支持pcm、wav，设置路径为sd卡请注意WRITE_EXTERNAL_STORAGE权限
         // 注：AUDIO_FORMAT参数语记需要更新版本才能生效
-        mIse.setParameter(SpeechConstant.AUDIO_FORMAT,"wav");
+        mIse.setParameter(SpeechConstant.AUDIO_FORMAT, "wav");
         mIse.setParameter(SpeechConstant.ISE_AUDIO_PATH, getRecordFilePath());
     }
 
