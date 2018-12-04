@@ -27,16 +27,14 @@ const instructions = Platform.select({
 export default class App extends Component<{}> {
     constructor() {
         super();
-
         this.state = {
             evalResult:[]
-        }
+        };
     }
 
     onClickStart() {
         console.log('onClickStart');
-
-        XfeiModule.startRecord("你好，吃过了吗", 'read_syllable')
+        XfeiModule.startRecord('not bad', 'en_us', 'read_sentence');
     };
 
     onClickStop() {
@@ -53,8 +51,7 @@ export default class App extends Component<{}> {
         state.evalResult.push(json);
         this.setState({
             evalResult:state.evalResult
-        })
-
+        });
     };
 
     componentWillMount() {
