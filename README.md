@@ -16,7 +16,7 @@ project(':react-native-xfmsc').projectDir = new File(rootProject.projectDir, '..
 
 2. android/app/build.gradle 添加依赖：
 ```
-dependencies {   compile project(':react-native-xfei')
+dependencies {   compile project(':react-native-xfmsc')
 ```
 
 3. mainActivity onCreate 时初始化msc客户端：
@@ -24,7 +24,18 @@ dependencies {   compile project(':react-native-xfei')
 SpeechUtility.createUtility(this, SpeechConstant.APPID + "=改成你的AppId");`
 ```
 
-4. 在语音云申请应用，并将下载的Android SDK中的msc.jar拷贝到libs目录中，相关平台.so文件拷贝到jniLibs目录中。
+4. MainApplication 中添加以下内容：
+```
+import com.hosoft.xfei.XfeiPackage;
+```
+```
+getPackages 中加入 new XfeiPackage()
+```
+```
+SpeechUtility.createUtility(this, SpeechConstant.APPID + "=改成你的AppId");`
+```
+
+5. 在语音云申请应用，并将下载的Android SDK中的msc.jar拷贝到libs目录中，相关平台.so文件拷贝到jniLibs目录中。
 
 ### IOS
 
