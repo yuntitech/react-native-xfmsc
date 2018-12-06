@@ -112,7 +112,7 @@ public class XfeiModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void startRecord(String evalPaper, String language, String category) {
+    public void startRecord(String evalPaper, String language, String category, String fileName) {
         Log.d(TAG, "startRecord IN");
 
         if (mIse != null) {
@@ -120,9 +120,10 @@ public class XfeiModule extends ReactContextBaseJavaModule {
                 return;
             }
 
-            callback("file", "", getRecordFilePath());
+            callback("file", "", getRecordFilePath(fileName));
             mIse.setParameter(SpeechConstant.LANGUAGE, language);  // 配置测评语言
             mIse.setParameter(SpeechConstant.ISE_CATEGORY, category);
+            mIse.setParameter(SpeechConstant.ISE_AUDIO_PATH, getRecordFilePath(fileName));
             mIse.startEvaluating(evalPaper, null, mEvaluatorListener);
         }
 
@@ -171,12 +172,11 @@ public class XfeiModule extends ReactContextBaseJavaModule {
         // 设置音频保存路径，保存音频格式支持pcm、wav，设置路径为sd卡请注意WRITE_EXTERNAL_STORAGE权限
         // 注：AUDIO_FORMAT参数语记需要更新版本才能生效
         mIse.setParameter(SpeechConstant.AUDIO_FORMAT, "wav");
-        mIse.setParameter(SpeechConstant.ISE_AUDIO_PATH, getRecordFilePath());
     }
 
-    private String getRecordFilePath() {
+    private String getRecordFilePath(String fileName) {
         //return Environment.getExternalStorageDirectory().getAbsolutePath() + "/msc/ise.wav";
-        return this.getReactApplicationContext().getFilesDir().getAbsolutePath() + "/msc/ise.wav";
+        return this.getReactApplicationContext().getFilesDir().getAbsolutePath() + "/evaluation/" + fileName;
     }
 
     private void sendEvent(ReactContext reactContext, String eventName, @Nullable WritableMap params) {
