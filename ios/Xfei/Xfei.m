@@ -46,13 +46,15 @@ RCT_EXPORT_METHOD(setParameter :(NSString *)key value:(NSString *)value){
 /*
  开始录音
  */
-RCT_EXPORT_METHOD(startRecord: (NSString *)evalPaper category:(NSString *)category){
+RCT_EXPORT_METHOD(startRecord: (NSString *)evalPaper language:(NSString *)language category:(NSString *)category fileName:(NSString *)fileName){
     NSLog(@"%s[IN]",__func__);
     
     [self initSpeechEvaluator];
     [self setParams];
+    [self.iFlySpeechEvaluator setParameter:language forKey:[IFlySpeechConstant LANGUAGE]];
     [self.iFlySpeechEvaluator setParameter:category forKey:[IFlySpeechConstant ISE_CATEGORY]];
     [self.iFlySpeechEvaluator setParameter:@"complete" forKey:[IFlySpeechConstant ISE_RESULT_LEVEL]];
+    [self.iFlySpeechEvaluator setParameter:[self getRecordFilePath:fileName] forKey:[IFlySpeechConstant ISE_AUDIO_PATH]];
 
     self.isSessionResultAppear=NO;
     self.isSessionEnd=YES;
@@ -63,9 +65,10 @@ RCT_EXPORT_METHOD(startRecord: (NSString *)evalPaper category:(NSString *)catego
     NSLog(@"language:%@",[self.iFlySpeechEvaluator parameterForKey:[IFlySpeechConstant LANGUAGE]]);
     
     BOOL isUTF8 = [[self.iFlySpeechEvaluator parameterForKey:[IFlySpeechConstant TEXT_ENCODING]] isEqualToString:@"utf-8"];
-    BOOL isZhCN = [[self.iFlySpeechEvaluator parameterForKey:[IFlySpeechConstant LANGUAGE]] isEqualToString:@"zh-cn"];
+    // BOOL isZhCN = [[self.iFlySpeechEvaluator parameterForKey:[IFlySpeechConstant LANGUAGE]] isEqualToString:@"zh-cn"];
     
-    BOOL needAddTextBom = isUTF8&&isZhCN;
+    // BOOL needAddTextBom = isUTF8&&isZhCN;
+    BOOL needAddTextBom = isUTF8;
     NSMutableData *buffer = nil;
     if(needAddTextBom){
         if(evalPaper && [evalPaper length]>0){
@@ -264,16 +267,22 @@ RCT_EXPORT_METHOD(cancel){
     [self.iFlySpeechEvaluator setParameter:@"16000" forKey:[IFlySpeechConstant SAMPLE_RATE]];
     [self.iFlySpeechEvaluator setParameter:@"utf-8" forKey:[IFlySpeechConstant TEXT_ENCODING]];
     [self.iFlySpeechEvaluator setParameter:@"xml" forKey:[IFlySpeechConstant ISE_RESULT_TYPE]];
-    [self.iFlySpeechEvaluator setParameter:@"zh-cn" forKey:[IFlySpeechConstant LANGUAGE]];
+    // [self.iFlySpeechEvaluator setParameter:@"zh-cn" forKey:[IFlySpeechConstant LANGUAGE]];
     [self.iFlySpeechEvaluator setParameter:@"5000" forKey:[IFlySpeechConstant VAD_BOS]];
-    [self.iFlySpeechEvaluator setParameter:@"3000" forKey:[IFlySpeechConstant VAD_EOS]];
-    [self.iFlySpeechEvaluator setParameter:@"300000" forKey:[IFlySpeechConstant SPEECH_TIMEOUT]];
-    
-    //NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    //NSString *docDir = [paths objectAtIndex:0];
-    //NSString *wavFile = [NSString stringWithFormat:@"%@/%@", docDir, @"ise.wav"];
-    //[self.iFlySpeechEvaluator setParameter:@"wav" forKey:@"audio_format"];
-    [self.iFlySpeechEvaluator setParameter:@"ise.pcm" forKey:[IFlySpeechConstant ISE_AUDIO_PATH]];
+    [self.iFlySpeechEvaluator setParameter:@"1800" forKey:[IFlySpeechConstant VAD_EOS]];
+    [self.iFlySpeechEvaluator setParameter:@"-1" forKey:[IFlySpeechConstant SPEECH_TIMEOUT]];
+    // [self.iFlySpeechEvaluator setParameter:@"wav" forKey:[IFlySpeechConstant AUDIO_FORMAT]];
+    // [self.iFlySpeechEvaluator setParameter:@"ise.pcm" forKey:[IFlySpeechConstant ISE_AUDIO_PATH]];
+}
+
+/*
+ 获取录音文件路径
+ */
+- (NSString *)getRecordFilePath: (NSString *) fileName {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *docDir = [paths objectAtIndex:0];
+    NSString *wavFile = [NSString stringWithFormat:@"%@/evaluation/%@", docDir, fileName];
+    return wavFile;
 }
 
 /*
