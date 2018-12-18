@@ -7,5 +7,6 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Jack Zhang",
-  "license": "ISC"
+  "license": "ISC",
+  "homepage": "https://github.com/jhzzzz/react-native-xfmsc"
 }
