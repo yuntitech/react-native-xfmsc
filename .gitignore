@@ -3,3 +3,5 @@ iFLYSE-SDK
 *.xcuserstate
 .idea
 .gradle
+/ios/Xfei.xcodeproj/xcuserdata/jaybo.xcuserdatad
+/.DS_Store
