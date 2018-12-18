@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   s.source_files   = "ios/**/*.{h,m}"
 
   s.frameworks     = 'SystemConfiguration', 'CoreTelephony', 'QuartzCore', 'CoreLocation', 'CoreGraphics', 'UIKit', 'Foundation', 'AVFoundation', 'AddressBook', 'AudioToolbox'
-  s.library        = 'libz'
+  s.library        = 'z'
   s.vendored_framework = 'ios/iflyMSC.framework'
   
   s.dependency 'React'
