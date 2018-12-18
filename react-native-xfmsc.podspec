@@ -16,6 +16,7 @@ Pod::Spec.new do |s|
   s.platform       = :ios, '8.0'
 
   s.source_files   = "ios/**/*.{h,m}"
+  s.exclude_files = 'ios/iflyMSC.framework'
 
   s.frameworks     = 'SystemConfiguration', 'CoreTelephony', 'QuartzCore', 'CoreLocation', 'CoreGraphics', 'UIKit', 'Foundation', 'AVFoundation', 'AddressBook', 'AudioToolbox'
   s.library        = 'z'
