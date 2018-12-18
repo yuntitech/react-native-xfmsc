@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		110683891E865DBA001352B5 /* Xfei.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 110683861E865DBA001352B5 /* Xfei.h */; };
 		1106844C1E867087001352B5 /* Xfei.m in Sources */ = {isa = PBXBuildFile; fileRef = 110683871E865DBA001352B5 /* Xfei.m */; };
-		95D7271C1F96E5B50015EC41 /* iflyMSC in Frameworks */ = {isa = PBXBuildFile; fileRef = 95D7271B1F96E5B50015EC41 /* iflyMSC */; };
 		95E0815E1FA0279400F3A070 /* PcmUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 95E0815D1FA026F100F3A070 /* PcmUtil.m */; };
 		95E0BA141F9749A200D89650 /* iflyMSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95E0BA131F9749A200D89650 /* iflyMSC.framework */; };
 /* End PBXBuildFile section */
@@ -45,7 +44,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				95E0BA141F9749A200D89650 /* iflyMSC.framework in Frameworks */,
-				95D7271C1F96E5B50015EC41 /* iflyMSC in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,10 +263,7 @@
 					"$(SRCROOT)/ise/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/iflyMSC.framework",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -288,10 +283,7 @@
 					"$(SRCROOT)/ise/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/iflyMSC.framework",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
