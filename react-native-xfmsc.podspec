@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 
   s.source_files   = 'ios/ise/**/*.{h,m}', 'ios/pcmutil/**/*.{h,m}', 'ios/Xfei/**/*.{h,m}', 'ios/Definition.h'
 
-  s.frameworks     = 'SystemConfiguration', 'CoreTelephony', 'QuartzCore', 'CoreLocation', 'CoreGraphics', 'UIKit', 'Foundation', 'AVFoundation', 'AddressBook', 'AudioToolbox'
+  s.frameworks     = 'SystemConfiguration', 'CoreTelephony', 'QuartzCore', 'CoreLocation', 'CoreGraphics', 'UIKit', 'Foundation', 'AVFoundation', 'AddressBook', 'Contacts', 'AudioToolbox'
   s.library        = 'z'
   s.vendored_framework = 'ios/iflyMSC.framework'
   
