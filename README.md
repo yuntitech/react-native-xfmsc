@@ -39,14 +39,7 @@ SpeechUtility.createUtility(this, SpeechConstant.APPID + "=改成你的AppId");`
 
 ### IOS
 
-1. 添加相关的 framework：
-TARGETS - Build Phases - Link binary With Libraries 
-添加 Contacts.framework ,AddressBook.framework
-
-2. TARGETS - Build Setting - Header Search Paths
-添加 $(SRCROOT)/../../../react-native-xfmsc/ios/Xfei
-
-3. AppDelegate.m
+1. AppDelegate.m
 ```
 #import "Xfei.h"
 ...
@@ -59,9 +52,7 @@ TARGETS - Build Phases - Link binary With Libraries
 }
 ```
 
-4. 项目工程 Libraries 加入 Xfei.xcodeproj
-5. TARGETS - Build Phases - Link binary With Libraries 添加 Xfei.a，Status Optional。
-6. 在语音云申请应用，并将下载的iOS SDK中 iflyMSC.Framework 拷贝到 react-native-xfmsc ios 目录中覆盖原文件。
+2. 在语音云申请应用，并将下载的iOS SDK中 iflyMSC.Framework 拷贝到 react-native-xfmsc ios 目录中覆盖原文件。
 
 ### javascript
 
