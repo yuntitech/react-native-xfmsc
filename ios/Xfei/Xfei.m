@@ -23,6 +23,8 @@
 
 RCT_EXPORT_MODULE(XfeiModule);
 
+NSString * curFileName = @"";
+
 /*
  事件回调
  */
@@ -53,12 +55,12 @@ RCT_EXPORT_METHOD(startRecord: (NSString *)evalPaper language:(NSString *)langua
     [self setParams];
     [self.iFlySpeechEvaluator setParameter:language forKey:[IFlySpeechConstant LANGUAGE]];
     [self.iFlySpeechEvaluator setParameter:category forKey:[IFlySpeechConstant ISE_CATEGORY]];
-    [self.iFlySpeechEvaluator setParameter:@"complete" forKey:[IFlySpeechConstant ISE_RESULT_LEVEL]];
-    [self.iFlySpeechEvaluator setParameter:[self getRecordFilePath:fileName] forKey:[IFlySpeechConstant ISE_AUDIO_PATH]];
+    // [self.iFlySpeechEvaluator setParameter:[self getRecordFilePath:fileName] forKey:[IFlySpeechConstant ISE_AUDIO_PATH]];
 
+    curFileName = fileName;
     self.isSessionResultAppear=NO;
     self.isSessionEnd=YES;
-    
+
     NSStringEncoding encoding = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
     
     NSLog(@"text encoding:%@",[self.iFlySpeechEvaluator parameterForKey:[IFlySpeechConstant TEXT_ENCODING]]);
@@ -216,10 +218,12 @@ RCT_EXPORT_METHOD(cancel){
         if(isLast){
             NSLog(@"speech finished!");
             //转换
-            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-            NSString *cachePath = [paths objectAtIndex:0];
-            NSString *pcmFile = [NSString stringWithFormat:@"%@/%@", cachePath, @"ise.pcm"];
-            NSString *wavFile = [NSString stringWithFormat:@"%@/%@", cachePath, @"ise.wav"];
+            NSArray *pcmPaths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+            NSString *pcmDir = [pcmPaths objectAtIndex:0];
+            NSArray *wavPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *wavDir = [wavPaths objectAtIndex:0];
+            NSString *pcmFile = [NSString stringWithFormat:@"%@/ise.pcm", pcmDir];
+            NSString *wavFile = [NSString stringWithFormat:@"%@/evaluation/%@.wav", wavDir, curFileName];
             
             PcmUtil *wavUtil = [[PcmUtil alloc] pcmToWavFile:pcmFile sampleRate:16000 topath:wavFile];
             //[audioPlayer dealloc];
@@ -271,18 +275,34 @@ RCT_EXPORT_METHOD(cancel){
     [self.iFlySpeechEvaluator setParameter:@"5000" forKey:[IFlySpeechConstant VAD_BOS]];
     [self.iFlySpeechEvaluator setParameter:@"1800" forKey:[IFlySpeechConstant VAD_EOS]];
     [self.iFlySpeechEvaluator setParameter:@"-1" forKey:[IFlySpeechConstant SPEECH_TIMEOUT]];
+    [self.iFlySpeechEvaluator setParameter:@"complete" forKey:[IFlySpeechConstant ISE_RESULT_LEVEL]];
+    [self.iFlySpeechEvaluator setParameter:@"ise.pcm" forKey:[IFlySpeechConstant ISE_AUDIO_PATH]];
     // [self.iFlySpeechEvaluator setParameter:@"wav" forKey:[IFlySpeechConstant AUDIO_FORMAT]];
-    // [self.iFlySpeechEvaluator setParameter:@"ise.pcm" forKey:[IFlySpeechConstant ISE_AUDIO_PATH]];
 }
 
 /*
  获取录音文件路径
  */
-- (NSString *)getRecordFilePath: (NSString *) fileName {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *docDir = [paths objectAtIndex:0];
-    NSString *wavFile = [NSString stringWithFormat:@"%@/evaluation/%@", docDir, fileName];
-    return wavFile;
+// - (NSString *)getRecordFilePath: (NSString *) fileName {
+//     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//     NSString *docDir = [paths objectAtIndex:0];
+//     NSString *pcmFile = [NSString stringWithFormat:@"%@/evaluation/%@.pcm", docDir, fileName];
+//     return pcmFile;
+// }
+
+// 创建录音文件目录
++ (void)createDir {
+    NSString * docDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *audioFilePath = [docDir stringByAppendingPathComponent:@"evaluation"];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+
+    BOOL isDir = NO;
+
+    BOOL existed = [fileManager fileExistsAtPath:audioFilePath isDirectory:&isDir];
+
+    if (!(isDir && existed)) {
+        [fileManager createDirectoryAtPath:audioFilePath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
 }
 
 /*
@@ -295,10 +315,13 @@ RCT_EXPORT_METHOD(cancel){
     //打开输出在console的log开关
     [IFlySetting showLogcat:YES];
     
-    //设置sdk的工作路径
+    //设置sdk的日志路径
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *cachePath = [paths objectAtIndex:0];
     [IFlySetting setLogFilePath:cachePath];
+
+    // 设置录音文件保存目录
+    [self createDir];
     
     NSString *initString = [[NSString alloc] initWithFormat:@"appid=%@",id];
     [IFlySpeechUtility createUtility:initString];
