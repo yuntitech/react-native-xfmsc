@@ -1,12 +1,12 @@
 {
   "name": "react-native-xfmsc",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "React Native module for iFLYTEK MSC",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Jack Zhang",
+  "author": "Yunti",
   "license": "ISC",
-  "homepage": "https://github.com/jhzzzz/react-native-xfmsc"
+  "homepage": "https://github.com/yuntitech/react-native-xfmsc"
 }
