@@ -44,4 +44,5 @@ allprojects {
 dependencies {
     compile 'com.facebook.react:react-native:+'
     compile fileTree(dir: "libs", include: ["*.jar"])
+    compile 'androidx.annotation:annotation:1.1.0'
 }
